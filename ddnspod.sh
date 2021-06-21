@@ -45,7 +45,7 @@ arWanIp4() {
 
     if [ -z "$hostIp" ]; then
         if type wget >/dev/null 2>&1; then
-            hostIp=$(wget -q -O - -t 2 http://members.3322.org/dyndns/getip)
+            hostIp=$(wget -q -O - -t 2 http://members.3322.org/dyndns/getip)    # avoid getting fq ip when using shadow socket
         else
             hostIp=$(curl -s http://members.3322.org/dyndns/getip)
         fi
@@ -175,6 +175,11 @@ arDdnsRecordIp() {
 
 arDdnsUpdate() {
 
+    # $1    domain name
+    # $2    ddnsid
+    # $3    sub domain name
+    # $4    hostip
+    # $5    recordtype[A|AAAA]
     local errMsg
 
     local recordRs
@@ -270,6 +275,7 @@ arDdnsCheck() {
     fi
 }
 
+echo "start checking at $(date)..."
 
 arToken="xx.yy"
 arDdnsCheck "test.org"
